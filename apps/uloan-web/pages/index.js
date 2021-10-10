@@ -11,8 +11,33 @@ import Results from '../components/Results'
 import styles from '../styles/Home.module.css'
 import requests from "../utils/requests"
 
+import uloanAbi from '../abis/ULoan.json';
+import stablecoinAbi from '../abis/Stablecoin.json';
+
+
 export default function Home() {
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({
+      "provider": null,
+      "signer": null,
+      "signerAddress": null,
+  })
+  const [contracts, setContracts] = useState({
+      "uloanContract": null,
+      "stablecoinContract": null
+  })
+
+  async function connectContracts() {
+    const uloanContract = new ethers.Contract(process.env.REACT_APP_FLOAN_ADDRESS, uloanAbi, user.signer);
+    // Get Stablecoin ERC20 address
+    const tokenAddress = await uloanContract.stablecoin();
+    // const tokenAddress = '';  // Public Testnet
+    const stablecoinContract = new ethers.Contract(tokenAddress, stablecoinAbi, user.signer);
+    
+    setContracts({
+      "uloanContract": uloanContract,
+      "stablecoinContract": stablecoinContract
+    })
+  }
 
   async function connectUser() {
     const web3Modal = new Web3Modal()
@@ -20,14 +45,14 @@ export default function Home() {
     const provider = new ethers.providers.Web3Provider(connection)
     const signer = provider.getSigner()
     
-    const connectedUser = {
-      provider: provider,
-      signer: signer,
-      signerAddress: signer.getAddress(),
-    }
-    setUser(connectedUser)
+    setUser({
+      "provider": provider,
+      "signer": signer,
+      "signerAddress": signer.getAddress(),
+    })
   }
  
+
   return (
     <div>
       <Head>
