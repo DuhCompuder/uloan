@@ -77,22 +77,25 @@ describe("ULoan", () => {
         });
     });
 
+    describe("Provide lender with estimate", () => {
+        it("Should give proper estimate", async () => {
+            let estimate = await uloan.connect(bobTheLender).getReturnEstimateInBasisPoint(ethers.utils.parseEther('3000').toString(),20,60,28);
+            console.log(estimate)
+        });
+    });
+
     describe("Lender Interactions",  () => {
 
         beforeEach(async () => {   
             await mockUSD.connect(owner).transfer(bobTheLender.address, ethers.utils.parseEther('5000').toString());
-            let balance = await mockUSD.balanceOf(bobTheLender.address);
-            console.log(balance.toString())
         });
 
         it("Should allow lender to deposit to uloan", async () => {
-            console.log("hello")
-            let balance = await mockUSD.balanceOf(bobTheLender.address);
-            console.log(balance.toString())
-    
-            let bobInterestRate = await uloan.connect(bobTheLender).depositCapital(ethers.utils.parseEther('4000').toString(),20,60,28);
-           
-            console.log(bobInterestRate)
+        
+            await mockUSD.connect(bobTheLender).approve(uloan.address, ethers.utils.parseEther('4000').toString());
+            let tx = await uloan.connect(bobTheLender).depositCapital(ethers.utils.parseEther('3000').toString(),20,60,28);
+            
+            expect(tx).to.emit(uloan, 'NewCapitalProvided')
         });
     })
     
