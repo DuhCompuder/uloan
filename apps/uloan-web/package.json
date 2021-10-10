@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.4",
+    "ethers": "^5.4.7",
     "next": "11.1.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "tailwind-scrollbar-hide": "^1.0.3"
+    "tailwind-scrollbar-hide": "^1.0.3",
+    "web3modal": "^1.9.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.7",

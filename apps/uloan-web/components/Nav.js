@@ -5,7 +5,6 @@ import {
     BadgeCheckIcon,
     CollectionIcon,
     HomeIcon,
-    CreditCardIcon,
     SearchIcon,
     UserIcon,
 } from "@heroicons/react/outline";
